@@ -17,7 +17,7 @@
       "host": "124.71.155.167",
       "port": 22,
       "ref": "origin/master",
-      "repo": "git@github.com:repo.git",
+      "repo": "git@github.com:DailyLee/swpost.git",
       "path": "/var/www/website",
       "ssh_options": "StrictHostKeyChecking=no",
       "env": {
