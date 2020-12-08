@@ -6,6 +6,7 @@ const https = require("https")
 const fs =require("fs")
 const bodyParser =require("koa-bodyparser")
 const post =require("./request/post")
+const port = process.env.PORT || 3000
 
 const app = new Koa()
 
@@ -16,7 +17,7 @@ app.use(staticServe(path.join(path.resolve(), staticPath)))
 app.use(bodyParser())
 app.use(post)
 
-http.createServer(app.callback()).listen(3000);
+http.createServer(app.callback()).listen(port);
 
 // const options = {
 //     key: fs.readFileSync("./server.key", "utf8"),
