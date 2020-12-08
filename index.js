@@ -16,7 +16,7 @@ app.use(staticServe(path.join(path.resolve(), staticPath)))
 app.use(bodyParser())
 app.use(post)
 
-http.createServer(app.callback()).listen(3000);
+http.createServer(app.callback()).listen(8081);
 
 // const options = {
 //     key: fs.readFileSync("./server.key", "utf8"),
