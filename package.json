@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "statt": "node index.js",
     "setup": "npm install && pm2 deploy ecosystem.json production setup",
     "deploy": "npm install && pm2 deploy ecosystem.json production"
   },
