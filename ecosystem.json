@@ -7,7 +7,7 @@
         "COMMON_VARIABLE": "true"
       },
       "env_production": {
-        "NODE_ENV": "pro"
+        "NODE_ENV": "production"
       }
     }
   ],
@@ -16,12 +16,12 @@
       "user": "root",
       "host": "124.71.155.167",
       "port": 22,
-      "ref": "origin/master",
+      "ref": "origin/main",
       "repo": "git@github.com:DailyLee/swpost.git",
       "path": "/var/www/website",
       "ssh_options": "StrictHostKeyChecking=no",
       "env": {
-        "NODE_ENV": "pro"
+        "NODE_ENV": "production"
       }
     }
   }
