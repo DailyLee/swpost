@@ -5,33 +5,89 @@
   <title>post test</title>
 </head>
 <body>
-<button id="json" style="width: 80px;height: 40px">json</button>
+<div>
+  <input type="file" id="fileInput" name="file" style="margin: 20px"/>
+</div>
+
+<button id="json" style="width: 80px;height: 40px;margin: 20px">json</button>
 <div id="jsonRes"></div>
+
+<button id="blob" style="width: 80px;height: 40px;margin: 20px">blob</button>
+
+<button id="arrayBuffer" style="width: 80px;height: 40px;margin: 20px">arrayBuffer</button>
+
+
 <script>
     var jsonBtn = document.getElementById('json');
+    var blobBtn = document.getElementById('blob');
+    var arrayBufferBtn = document.getElementById('arrayBuffer');
     var jsonRes = document.getElementById('jsonRes');
+
+    var fileInput = document.getElementById('fileInput');
+
+    var uploadFile;
+
     function jsonPost() {
         var xhr = new XMLHttpRequest();
         //使用HTTP POST请求与服务器交互数据
         xhr.open("POST", "/", true);
         //设置发送数据的请求格式
         xhr.setRequestHeader('content-type', 'application/json');
-        xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 //根据服务器的响应内容格式处理响应结果
-                if(xhr.getResponseHeader('content-type').startsWith('application/json')){
+                if (xhr.getResponseHeader('content-type').startsWith('application/json')) {
                     jsonRes.innerHTML = xhr.responseText
                 } else {
                     console.log(xhr.responseText);
                 }
             }
         }
-        var sendData = {userName:'userName',nickName:'nickName',email:'email'};
+        var sendData = {userName: 'userName', nickName: 'nickName', email: 'email'};
         //将用户输入值序列化成字符串
         xhr.send(JSON.stringify(sendData));
     }
-    jsonBtn.addEventListener('click',function () {
+
+    function filePost(fileObj) {
+        var formData = new FormData();
+        formData.append('file', fileObj);
+        var ajax = new XMLHttpRequest();
+        ajax.open("POST", "/", true);
+        ajax.send(formData);
+    }
+
+    function blobPost() {
+        var oReq = new XMLHttpRequest();
+        oReq.open("POST", "/", true);
+
+        var bb = new Blob([uploadFile]); // 需要合适的前缀: window.MozBlobBuilder 或者 window.WebKitBlobBuilder
+        oReq.send(bb);
+    }
+
+    function arrayPost() {
+        var oReq = new XMLHttpRequest();
+        oReq.open("POST", "/", true);
+
+        uploadFile.arrayBuffer().then(res => {
+            console.log('arrayBuffer',res)
+            oReq.send(res);
+        })
+    }
+
+    fileInput.addEventListener('change', function (e) {
+        uploadFile = fileInput.files[0];
+    })
+
+    jsonBtn.addEventListener('click', function () {
         jsonPost()
+    })
+
+    blobBtn.addEventListener('click', function () {
+        blobPost()
+    })
+
+    arrayBufferBtn.addEventListener('click', function () {
+        arrayPost()
     })
 
 </script>
