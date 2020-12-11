@@ -59,6 +59,8 @@
     function blobPost() {
         var oReq = new XMLHttpRequest();
         oReq.open("POST", "/", true);
+        oReq.setRequestHeader("Content-Type","application/octet-stream")
+        oReq.setRequestHeader("Accept","application/octet-stream")
 
         var bb = new Blob([uploadFile]); // 需要合适的前缀: window.MozBlobBuilder 或者 window.WebKitBlobBuilder
         oReq.send(bb);
@@ -67,6 +69,8 @@
     function arrayPost() {
         var oReq = new XMLHttpRequest();
         oReq.open("POST", "/", true);
+        oReq.setRequestHeader("Content-Type","application/octet-stream")
+        oReq.setRequestHeader("Accept","application/octet-stream")
 
         uploadFile.arrayBuffer().then(res => {
             console.log('arrayBuffer',res)
