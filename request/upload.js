@@ -31,6 +31,36 @@ function getSuffixName(fileName) {
     return nameList[nameList.length - 1]
 }
 
+// 将POST请求参数字符串解析成JSON
+function parseQueryStr(queryStr) {
+    let queryData = {}
+    let queryStrList = queryStr.split('&')
+    console.log(queryStrList)
+    for (let [index, queryStr] of queryStrList.entries()) {
+        let itemList = queryStr.split('=')
+        queryData[itemList[0]] = decodeURIComponent(itemList[1])
+    }
+    return queryData
+}
+
+function parsePostData(ctx) {
+    return new Promise((resolve, reject) => {
+        try {
+            let postdata = "";
+            ctx.req.addListener('data', (data) => {
+                postdata += data
+                console.log('data', data)
+            })
+            ctx.req.addListener("end", function () {
+                console.log('postdata', postdata)
+                resolve(postdata)
+            })
+        } catch (err) {
+            reject(err)
+        }
+    })
+}
+
 /**
  * 上传文件
  * @param  {object} ctx     koa上下文
@@ -44,11 +74,14 @@ function uploadFile(ctx, options) {
     try {
         busboy = new Busboy({headers: req.headers})
     } catch (e) {
-        return {
-            formData: {},
-            message: "二进制上传成功",
-            success: true
-        }
+        return parsePostData(ctx).then(payload => {
+            return {
+                payload,
+                message: "二进制上传成功",
+                success: true
+            }
+        })
+
     }
 
     // 获取类型
