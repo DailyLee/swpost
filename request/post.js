@@ -1,6 +1,9 @@
-const post = async (ctx ) => {
+const uploadFile = require('./upload')
+const path = require('path')
 
-    if ( ctx.url === '/' && ctx.method === 'GET' ) {
+const post = async (ctx) => {
+
+    if (ctx.url === '/' && ctx.method === 'GET') {
         // 当GET请求时候返回表单页面
         let html = `
       <h1>koa2 request post demo</h1>
@@ -15,10 +18,22 @@ const post = async (ctx ) => {
       </form>
     `
         ctx.body = html
-    } else if ( ctx.url === '/' && ctx.method === 'POST' ) {
+    } else if (ctx.url === '/' && ctx.method === 'POST') {
         // 当POST请求的时候，中间件koa-bodyparser解析POST表单里的数据，并显示出来
-        let postData = ctx.request.body
+        let postData = ctx.req.body
         ctx.body = postData
+    } else if (ctx.url === '/upload' && ctx.method === 'POST') {
+        // 上传文件请求处理
+        let result = {success: false}
+        let serverFilePath = path.join(__dirname, 'upload-files')
+
+        // 上传文件事件
+        result = await uploadFile(ctx, {
+            fileType: 'album', // common or album
+            path: serverFilePath
+        })
+
+        ctx.body = result
     } else {
         // 其他请求显示404
         ctx.body = '<h1>404！！！ o(╯□╰)o</h1>'

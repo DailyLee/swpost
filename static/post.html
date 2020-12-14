@@ -16,11 +16,14 @@
 
 <button id="arrayBuffer" style="width: 80px;height: 40px;margin: 20px">arrayBuffer</button>
 
+<button id="formUpload" style="width: 80px;height: 40px;margin: 20px">formUpload</button>
+
 
 <script>
     var jsonBtn = document.getElementById('json');
     var blobBtn = document.getElementById('blob');
     var arrayBufferBtn = document.getElementById('arrayBuffer');
+    var formUploadBtn = document.getElementById('formUpload');
     var jsonRes = document.getElementById('jsonRes');
 
     var fileInput = document.getElementById('fileInput');
@@ -58,9 +61,8 @@
 
     function blobPost() {
         var oReq = new XMLHttpRequest();
-        oReq.open("POST", "/", true);
-        oReq.setRequestHeader("Content-Type","application/octet-stream")
-        oReq.setRequestHeader("Accept","application/octet-stream")
+        oReq.open("POST", "/upload", true);
+        oReq.setRequestHeader("Content-Type", "image/png")
 
         var bb = new Blob([uploadFile]); // 需要合适的前缀: window.MozBlobBuilder 或者 window.WebKitBlobBuilder
         oReq.send(bb);
@@ -68,14 +70,23 @@
 
     function arrayPost() {
         var oReq = new XMLHttpRequest();
-        oReq.open("POST", "/", true);
-        oReq.setRequestHeader("Content-Type","application/octet-stream")
-        oReq.setRequestHeader("Accept","application/octet-stream")
+        oReq.open("POST", "/upload", true);
+        //oReq.setRequestHeader("Content-Type","image/png")
 
-        uploadFile.arrayBuffer().then(res => {
-            console.log('arrayBuffer',res)
+        new Response(uploadFile).arrayBuffer().then(res => {
+            console.log('arrayBuffer', res)
             oReq.send(res);
         })
+    }
+
+    function formUpload() {
+        var oReq = new XMLHttpRequest();
+        oReq.open("POST", "/upload", true);
+
+        var data = new FormData();
+        data.append(uploadFile.name, uploadFile);
+        data.append('time', new Date().getTime()+'');
+        oReq.send(data);
     }
 
     fileInput.addEventListener('change', function (e) {
@@ -92,6 +103,10 @@
 
     arrayBufferBtn.addEventListener('click', function () {
         arrayPost()
+    })
+
+    formUploadBtn.addEventListener('click', function () {
+        formUpload()
     })
 
 </script>
