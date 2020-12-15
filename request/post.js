@@ -20,7 +20,7 @@ const post = async (ctx) => {
         ctx.body = html
     } else if (ctx.url === '/' && ctx.method === 'POST') {
         // 当POST请求的时候，中间件koa-bodyparser解析POST表单里的数据，并显示出来
-        let postData = ctx.req.body
+        let postData = ctx.request.body
         ctx.body = postData
     } else if (ctx.url === '/upload' && ctx.method === 'POST') {
         // 上传文件请求处理

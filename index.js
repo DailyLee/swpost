@@ -14,7 +14,7 @@ const app = new Koa()
 const staticPath = './static'
 app.use(staticServe(path.join(path.resolve(), staticPath)))
 
-// app.use(bodyParser())
+app.use(bodyParser())
 app.use(post)
 
 http.createServer(app.callback()).listen(port);

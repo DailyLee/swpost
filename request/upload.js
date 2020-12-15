@@ -116,6 +116,8 @@ function uploadFile(ctx, options) {
             let _uploadFilePath = path.join(filePath, fileName)
             let saveTo = path.join(_uploadFilePath)
 
+           // resolve(result)
+
             // 文件保存到制定路径
             file.pipe(fs.createWriteStream(saveTo))
 
@@ -126,7 +128,6 @@ function uploadFile(ctx, options) {
                 result.uploadFile = fileName
 
                 console.log('文件上传成功！')
-                resolve(result)
             })
         })
 
