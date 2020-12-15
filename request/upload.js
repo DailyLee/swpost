@@ -46,14 +46,12 @@ function parseQueryStr(queryStr) {
 function parsePostData(ctx) {
     return new Promise((resolve, reject) => {
         try {
-            let postdata = "";
+            let postdata = [];
             ctx.req.addListener('data', (data) => {
-                postdata += data
-                console.log('data', data)
+                postdata.push(data)
             })
             ctx.req.addListener("end", function () {
-                console.log('postdata', postdata)
-                resolve(postdata)
+                resolve(Buffer.concat(postdata))
             })
         } catch (err) {
             reject(err)
@@ -75,18 +73,33 @@ function uploadFile(ctx, options) {
         busboy = new Busboy({headers: req.headers})
     } catch (e) {
         return parsePostData(ctx).then(payload => {
-            return {
-                payload,
-                message: "二进制上传成功",
-                success: true
-            }
-        })
+            let filePath = `${Date.now()}.png`;
 
+            return new Promise((resolve, reject) => {
+                fs.writeFile('./static/upload/' + filePath, payload, 'utf8', (error) => {
+                    if (error) {
+                        console.log(error);
+                        reject({
+                            message: error.message,
+                            success: false
+                        })
+                    }
+                    console.log('filePath', filePath)
+                    resolve({
+                        uploadFile: filePath,
+                        message: "二进制上传成功",
+                        success: true
+                    })
+                })
+            })
+
+
+        })
     }
 
     // 获取类型
-    let fileType = options.fileType || 'common'
-    let filePath = path.join(options.path, fileType)
+    // let fileType = options.fileType || 'common'
+    let filePath = path.join('./static/upload')
     let mkdirResult = mkdirsSync(filePath)
 
     return new Promise((resolve, reject) => {
@@ -94,6 +107,7 @@ function uploadFile(ctx, options) {
         let result = {
             success: false,
             formData: {},
+            uploadFile: ''
         }
 
         // 解析请求文件事件
@@ -109,6 +123,7 @@ function uploadFile(ctx, options) {
             file.on('end', function () {
                 result.success = true
                 result.message = '文件上传成功'
+                result.uploadFile = fileName
 
                 console.log('文件上传成功！')
                 resolve(result)
