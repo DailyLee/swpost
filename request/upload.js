@@ -69,9 +69,15 @@ function uploadFile(ctx, options) {
     let req = ctx.req
     let res = ctx.res
     let busboy;
+    console.log('req.headers', req.headers)
     try {
+        console.log('parse by busboy')
+
         busboy = new Busboy({headers: req.headers})
+
     } catch (e) {
+        console.log('parse by parsePostData')
+
         return parsePostData(ctx).then(payload => {
             let filePath = `${Date.now()}.png`;
 
@@ -112,11 +118,13 @@ function uploadFile(ctx, options) {
 
         // 解析请求文件事件
         busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+            console.log('file', fieldname, filename)
+
             let fileName = Math.random().toString(16).substr(2) + '.' + getSuffixName(filename)
             let _uploadFilePath = path.join(filePath, fileName)
             let saveTo = path.join(_uploadFilePath)
 
-           // resolve(result)
+            // resolve(result)
 
             // 文件保存到制定路径
             file.pipe(fs.createWriteStream(saveTo))
