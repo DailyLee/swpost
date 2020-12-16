@@ -82,7 +82,10 @@ function uploadFile(ctx, options) {
             let filePath = `${Date.now()}.png`;
 
             return new Promise((resolve, reject) => {
-                fs.writeFile('./static/upload/' + filePath, payload, 'utf8', (error) => {
+                let uploadPath = path.join('./static/upload/')
+                mkdirsSync(uploadPath);
+
+                fs.writeFile(uploadPath + filePath, payload, 'utf8', (error) => {
                     if (error) {
                         console.log(error);
                         reject({
