@@ -78,6 +78,7 @@
     function blobPost() {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/upload", true);
+        xhr.setRequestHeader('content-type', 'application/octet-stream');
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
@@ -97,9 +98,10 @@
     function arrayPost() {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/upload", true);
+        xhr.setRequestHeader('content-type', 'application/octet-stream');
 
         xhr.onreadystatechange = function () {
-            console.log('onreadystatechange',xhr.readyState)
+            console.log('onreadystatechange', xhr.readyState)
             if (xhr.readyState === 4) {
                 //根据服务器的响应内容格式处理响应结果
                 if (xhr.getResponseHeader('content-type').startsWith('application/json')) {
@@ -132,9 +134,9 @@
         }
 
         var data = new FormData();
-        data.append(uploadFile.name, uploadFile,'uploadFile.png');
+        data.append(uploadFile.name, uploadFile, 'uploadFile.png');
         data.append('key1', 'value1');
-        data.append('time', new Date().getTime()+'');
+        data.append('time', new Date().getTime() + '');
         xhr.send(data);
     }
 
@@ -154,7 +156,7 @@
         }
 
         var data = new FormData();
-        data.append('time', new Date().getTime()+'');
+        data.append('time', new Date().getTime() + '');
         data.append('key1', 'value1');
         data.append('key2', 'value2');
         xhr.send(data);
