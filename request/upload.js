@@ -101,8 +101,6 @@ function uploadFile(ctx, options) {
                     })
                 })
             })
-
-
         })
     }
 

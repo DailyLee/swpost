@@ -21,6 +21,8 @@
 
 <button id="formUpload2" style="width: 100px;height: 40px;margin: 20px">formUpload2</button>
 
+<button id="fetchPost" style="width: 100px;height: 40px;margin: 20px">fetchPost</button>
+
 
 <script>
     var jsonBtn = document.getElementById('json');
@@ -28,6 +30,7 @@
     var arrayBufferBtn = document.getElementById('arrayBuffer');
     var formUploadBtn1 = document.getElementById('formUpload1');
     var formUploadBtn2 = document.getElementById('formUpload2');
+    var fetchPostBtn = document.getElementById('fetchPost');
     var res = document.getElementById('jsonRes');
 
     var fileInput = document.getElementById('fileInput');
@@ -162,6 +165,20 @@
         xhr.send(data);
     }
 
+    function fetchPost() {
+        fetch('/upload', {
+            method: 'POST',
+            body: uploadFile,
+            headers: {
+                'Content-Type': 'application/octet-stream'
+            }
+        }).then(function (response) {
+            response.text().then(text =>{
+                res.innerHTML = text
+            })
+        })
+    }
+
     fileInput.addEventListener('change', function (e) {
         uploadFile = fileInput.files[0];
     })
@@ -184,6 +201,10 @@
 
     formUploadBtn2.addEventListener('click', function () {
         formUpload2()
+    })
+
+    fetchPostBtn.addEventListener('click', function () {
+        fetchPost()
     })
 
 </script>

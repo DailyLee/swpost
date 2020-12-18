@@ -1,0 +1,20 @@
+{
+  "game_biz": "bh3_cn",
+  "enable": true,
+  "load_limit": 3,
+  "lang": "zh-cn",
+  "updated_at": "2020-12-18 10:28:31",
+  "pages": [
+    {
+      "name": "e20201001ip",
+      "url": "http://localhost:3000/bh3/postMessage.html",
+      "platform": "Android,PC,IOS",
+      "network": "WiFi,4G/5G",
+      "start_time": "2020-09-22 12:07:49",
+      "end_time": "2021-01-01 12:07:49",
+      "res_list": [
+        "http://localhost:3000/bh3/postMessage.html"
+      ]
+    }
+  ]
+}
