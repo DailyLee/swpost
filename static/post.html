@@ -23,6 +23,8 @@
 
 <button id="fetchPost" style="width: 100px;height: 40px;margin: 20px">fetchPost</button>
 
+<button id="fetchPostFormData" style="width: 100px;height: 40px;margin: 20px">fetchPostFormData</button>
+
 
 <script>
     var jsonBtn = document.getElementById('json');
@@ -31,6 +33,7 @@
     var formUploadBtn1 = document.getElementById('formUpload1');
     var formUploadBtn2 = document.getElementById('formUpload2');
     var fetchPostBtn = document.getElementById('fetchPost');
+    var fetchPostFormDataBtn = document.getElementById('fetchPostFormData');
     var res = document.getElementById('jsonRes');
 
     var fileInput = document.getElementById('fileInput');
@@ -179,6 +182,21 @@
         })
     }
 
+    function fetchPostForm(){
+        var fetchData = new FormData()
+        fetchData.append('time', new Date().getTime() + '');
+        fetchData.append(uploadFile.name, uploadFile, 'uploadFile.png');
+
+        fetch('/upload', {
+            method: 'POST',
+            body: fetchData
+        }).then(function (response) {
+            response.text().then(text =>{
+                res.innerHTML = text
+            })
+        })
+    }
+
     fileInput.addEventListener('change', function (e) {
         uploadFile = fileInput.files[0];
     })
@@ -205,6 +223,10 @@
 
     fetchPostBtn.addEventListener('click', function () {
         fetchPost()
+    })
+
+    fetchPostFormDataBtn.addEventListener('click',function () {
+        fetchPostForm()
     })
 
 </script>
