@@ -7,13 +7,13 @@
   "pages": [
     {
       "name": "e20201001ip",
-      "url": "http://localhost:3000/bh3/postMessage.html",
+      "url": "https://swpost.herokuapp.com/bh3/postMessage.html",
       "platform": "Android,PC,IOS",
       "network": "WiFi,4G/5G",
       "start_time": "2020-09-22 12:07:49",
       "end_time": "2021-01-01 12:07:49",
       "res_list": [
-        "http://localhost:3000/bh3/postMessage.html"
+        "https://swpost.herokuapp.com/bh3/postMessage.html"
       ]
     }
   ]
