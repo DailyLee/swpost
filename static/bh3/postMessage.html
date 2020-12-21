@@ -6,13 +6,22 @@
 </head>
 <body>
 <div id="content"></div>
+<br/>
+<div id="serviceWorker"></div>
+<br/>
+<div id="controller"></div>
+<br/>
+<div id="state"></div>
 <script>
     var content = document.getElementById('content');
+    var serviceWorker = document.getElementById('serviceWorker');
+    var controller = document.getElementById('controller');
+    var state = document.getElementById('state');
     content.innerHTML = new Date().getTime() + ''
 
-    console.log('navigator.serviceWorker', navigator.serviceWorker.controller)
-    console.log('navigator.serviceWorker.controller', navigator.serviceWorker.controller)
-    console.log('navigator.serviceWorker.controller.state', navigator.serviceWorker.controller.state)
+    serviceWorker.innerHTML = 'navigator.serviceWorker:' + navigator.serviceWorker
+    controller.innerHTML = 'controller:' + navigator.serviceWorker.controller
+    state.innerHTML = 'state:' + navigator.serviceWorker.controller.state
 
     navigator.serviceWorker.addEventListener("message", receiveMessage);
 
