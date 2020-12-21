@@ -10,7 +10,7 @@
     var content = document.getElementById('content');
     content.innerHTML = new Date().getTime() + ''
 
-    navigator.serviceWorker.addEventListener("message", receiveMessage, false);
+    navigator.serviceWorker.addEventListener("message", receiveMessag);
 
     function receiveMessage(event) {
         // For Chrome, the origin property is in the event.originalEvent
