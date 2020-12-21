@@ -10,6 +10,10 @@
     var content = document.getElementById('content');
     content.innerHTML = new Date().getTime() + ''
 
+    console.log('navigator.serviceWorker', navigator.serviceWorker.controller)
+    console.log('navigator.serviceWorker.controller', navigator.serviceWorker.controller)
+    console.log('navigator.serviceWorker.controller.state', navigator.serviceWorker.controller.state)
+
     navigator.serviceWorker.addEventListener("message", receiveMessage);
 
     function receiveMessage(event) {
@@ -18,9 +22,9 @@
         // 这里不准确，chrome没有这个属性
         // var origin = event.origin || event.originalEvent.origin;
         console.log('receiveMessage', event.data)
-        if (event.data.meta === 'mihoyo-sw-broadcast-update'){
+        if (event.data.meta === 'mihoyo-sw-broadcast-update') {
             console.log('mihoyo-sw-broadcast-update');
-            content.innerHTML =  JSON.stringify(event.data.payload);
+            content.innerHTML = JSON.stringify(event.data.payload);
         }
     }
 </script>
