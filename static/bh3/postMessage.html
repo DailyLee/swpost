@@ -23,6 +23,17 @@
     controller.innerHTML = 'controller:' + navigator.serviceWorker.controller
     state.innerHTML = 'state:' + navigator.serviceWorker.controller.state
 
+    if ('serviceWorker' in navigator) {
+        content.innerHTML = "has serviceWorker";
+        navigator.serviceWorker.ready
+            .then(function(registration) {
+                content.innerHTML = "A service worker is active" + registration.active;
+                navigator.serviceWorker.addEventListener("message", receiveMessage);
+            });
+    } else {
+        content.innerHTML = "Service workers are not supported.";
+    }
+
     navigator.serviceWorker.addEventListener("message", receiveMessage);
 
     function receiveMessage(event) {
