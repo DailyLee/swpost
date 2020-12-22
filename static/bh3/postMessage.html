@@ -17,43 +17,43 @@
     var serviceWorker = document.getElementById('serviceWorker');
     var controller = document.getElementById('controller');
     var state = document.getElementById('state');
-    content.innerHTML = new Date().getTime() + ''
+    content.innerHTML = new Date().getTime() + '-V2';
 
-    serviceWorker.innerHTML = 'navigator.serviceWorker:' + navigator.serviceWorker
-    controller.innerHTML = 'controller:' + navigator.serviceWorker.controller
-    state.innerHTML = 'state:' + navigator.serviceWorker.controller.state
+    //serviceWorker.innerHTML = 'navigator.serviceWorker:' + navigator.serviceWorker
+    //controller.innerHTML = 'controller:' + navigator.serviceWorker.controller
+    //state.innerHTML = 'state:' + navigator.serviceWorker.controller.state
 
-    if ('serviceWorker' in navigator) {
-        content.innerHTML = "has serviceWorker";
-        navigator.serviceWorker.ready
-            .then(function(registration) {
-                content.innerHTML = "A service worker is active" + registration.active;
-                navigator.serviceWorker.addEventListener("message", receiveMessage);
-            });
-    } else {
-        content.innerHTML = "Service workers are not supported.";
-    }
-
-    navigator.serviceWorker.addEventListener("message", receiveMessage);
+    //navigator.serviceWorker.addEventListener("message", receiveMessage);
 
     function receiveMessage(event) {
         // For Chrome, the origin property is in the event.originalEvent
         // object.
         // 这里不准确，chrome没有这个属性
         // var origin = event.origin || event.originalEvent.origin;
-        console.log('receiveMessage', event.data)
+        content.innerHTML = JSON.stringify(event);
         if (event.data.meta === 'mihoyo-sw-broadcast-update') {
             console.log('mihoyo-sw-broadcast-update');
             content.innerHTML = JSON.stringify(event.data.payload);
         }
     }
 
+    if ('serviceWorker' in navigator) {
+        content.innerHTML = 'has serviceWorker';
+        navigator.serviceWorker.ready
+            .then(function(registration) {
+                content.innerHTML = 'A service worker is active';
+                navigator.serviceWorker.addEventListener('message', receiveMessage);
+            });
+    } else {
+        content.innerHTML = 'Service workers are not supported.';
+    }
+
     setTimeout(function() {
-        navigator.serviceWorker.addEventListener("messageA", receiveMessage);
+        navigator.serviceWorker.addEventListener('messageA', function(e){});
     }, 2);
 
     setTimeout(function() {
-        navigator.serviceWorker.addEventListener("messageB", function(e){});
+        navigator.serviceWorker.addEventListener('messageB', function(e){});
     }, 5);
 </script>
 </body>
