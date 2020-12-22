@@ -36,6 +36,10 @@
             content.innerHTML = JSON.stringify(event.data.payload);
         }
     }
+
+    setTimeout(function() {
+        navigator.serviceWorker.addEventListener("message2", receiveMessage);
+    }, 2);
 </script>
 </body>
 </html>
