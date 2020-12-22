@@ -38,8 +38,12 @@
     }
 
     setTimeout(function() {
-        navigator.serviceWorker.addEventListener("message2", receiveMessage);
+        navigator.serviceWorker.addEventListener("messageA", receiveMessage);
     }, 2);
+
+    setTimeout(function() {
+        navigator.serviceWorker.addEventListener("messageB", function(e){});
+    }, 5);
 </script>
 </body>
 </html>
