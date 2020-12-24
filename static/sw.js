@@ -1449,7 +1449,13 @@
                 }
                 var resultingClientId = options.event.resultingClientId;
 
+                // eslint-disable-next-line no-console
 
+                console.log('event', options.event);
+                // eslint-disable-next-line no-console
+                console.log('event.clientId', options.event.clientId);
+                // eslint-disable-next-line no-console
+                console.log('event.resultingClientId', options.event.resultingClientId);
                 this.testClientsGet(resultingClientId);
 
                 if (!responsesAreSame(options.oldResponse, options.newResponse, this._headersToCheck)) {
