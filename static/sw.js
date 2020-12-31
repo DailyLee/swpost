@@ -423,6 +423,7 @@
             _ref$plugins = _ref.plugins,
             plugins = _ref$plugins === undefined ? [] : _ref$plugins;
 
+        // 不指定cacheName 就在所有缓存里找
         var cachePromise = cacheName ? caches.open(cacheName) : Promise.resolve(caches);
 
         // 有些低版本手机 不支持ignoreSearch options 所以在这里手动处理一下，这样还能提升性能（chrome上有个ignoreSearch的性能bug）
@@ -436,7 +437,7 @@
                 if (cachedResponse) {
                     return applyBeforeResponsePlugin(plugins, { request: request, cachedResponse: cachedResponse });
                 }
-                throw new Error('no match cache' + ignoreSearchUrl);
+                throw new Error('cache match failed\uFF1A' + ignoreSearchUrl);
             });
         });
     }
@@ -465,11 +466,11 @@
         };
 
         return caches.open(cacheName).then(function (cache) {
-            matchWrapper({ cacheName: cacheName, request: request, event: event }).then(_applyCacheDidUpdatePlugin)
+            matchWrapper({ cacheName: cacheName, request: request, event: event })
             // 如果在cacheName的缓存中找不到，就在全部缓存中找一找（可能缓存在预加载的页面里了）
             .catch(function () {
-                matchWrapper({ request: request, event: event }).then(_applyCacheDidUpdatePlugin);
-            });
+                return matchWrapper({ request: request, event: event });
+            }).then(_applyCacheDidUpdatePlugin);
 
             if (self.isIos) {
                 // TODO sw webview 上有个bug 导致clone出来的response无法put缓存；ios用cache.add方法，缺点是会多一次网络请求
@@ -1449,14 +1450,6 @@
                 }
                 var resultingClientId = options.event.resultingClientId;
 
-                // eslint-disable-next-line no-console
-
-                console.log('event', options.event);
-                // eslint-disable-next-line no-console
-                console.log('event.clientId', options.event.clientId);
-                // eslint-disable-next-line no-console
-                console.log('event.resultingClientId', options.event.resultingClientId);
-                this.testClientsGet(resultingClientId);
 
                 if (!responsesAreSame(options.oldResponse, options.newResponse, this._headersToCheck)) {
                     // For navigation requests, wait until the new window client exists
@@ -1485,20 +1478,6 @@
                         this._postMessage2Window(options);
                     }
                 }
-            }
-
-            // eslint-disable-next-line class-methods-use-this
-
-        }, {
-            key: 'testClientsGet',
-            value: function testClientsGet(resultingClientId) {
-                self.clients.get(resultingClientId).then(function (client) {
-                    // eslint-disable-next-line no-console
-                    console.log('getClient success', client);
-                }).catch(function (e) {
-                    // eslint-disable-next-line no-console
-                    console.log('getClient error', e);
-                });
             }
         }, {
             key: '_postMessage2Window',
@@ -1575,18 +1554,6 @@
         router.registerRoute('precacheRoute', /https:\/\/webstatic(-sea)?(-test)?.mihoyo.com\/.*\.(js|css|png|jpe?g|gif)(\?.*)?$/, cacheFirst({
             fetchOptions: { mode: 'cors', credentials: 'same-origin' }
         }));
-
-        try {
-            // 动态加载js
-            self.importScripts('./mihoyoCloudFunc.js');
-            self.mihoyoCloudFunc().then(function (res) {
-                // eslint-disable-next-line no-console
-                console.log('mihoyoCloudFunc', res);
-            });
-        } catch (e) {
-            // eslint-disable-next-line no-console
-            console.log('importScripts error', e);
-        }
 
         var fetchAndRouteCache = function fetchAndRouteCache() {
             return fetch(api).then(function (res) {
